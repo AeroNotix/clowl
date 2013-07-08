@@ -3,4 +3,7 @@
   :license "BSD"
   :url "https://github.com/AeroNotix/clowl"
   :dependencies [[org.clojure/clojure "1.5.1"]
-                 [clabango "0.5"]])
+                 [compojure "1.1.5"]
+                 [clabango "0.5"]]
+  :ring {:handler clowl.clowl/app}
+  :plugins [[lein-ring "0.8.5"]])
