@@ -39,7 +39,11 @@
   (route/resources "/static/")
   (GET "/about" []
        (blog "about"))
-  (route/not-found "<h1>Page not found</h1>"))
+  (route/not-found
+   (let [tmpl (-> "templates/blog.html" io/resource io/file)]
+     (render tmpl {:blog_title "404"
+                   :blog_post "Not found"
+                   :STATIC_URL "/static/"}))))
 
 (def app
      (handler/site app-routes))
