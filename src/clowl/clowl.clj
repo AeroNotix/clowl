@@ -8,16 +8,29 @@
 
 (defn get-blog [blogname]
   (j/query mysql-db
-           (s/select :blog_post :blog_entry (s/where {:blog_url blogname}))))
+           (s/select * :blog_entry (s/where {:blog_url blogname}))))
+
+(defn get-blog-list []
+  (j/query mysql-db
+           (s/select * :blog_entry)))
 
 (defn blog [blogname]
-  (do
-    (println (type (seq (get-blog blogname))))
-    (seq (get-blog blogname))))
+  (let [tmpl (-> "templates/blog.html" io/resource io/file)
+        b (get-blog blogname)]
+    (render tmpl {:blog_title (:blog_title b)
+                  :blog_post (:blog_post b)
+                  :STATIC_URL "/static/"})))
+
+(defn bloglist []
+  (let [tmpl (-> "templates/blogmode.html" io/resource io/file)]
+    (render tmpl {:blog (get-blog-list)
+                  :STATIC_URL "/static/"})))
 
 (defroutes app-routes
   (GET "/blog/:blogname" [blogname]
        (blog blogname))
+  (GET "/blog/" []
+       (bloglist))
   (GET "/" []
        (blog "base"))
   (GET "/about" []
