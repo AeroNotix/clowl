@@ -1,1 +1,3 @@
 target/
+src/clowl/connection.clj
+.lein-repl-history
