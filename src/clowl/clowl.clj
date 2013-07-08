@@ -21,9 +21,9 @@
 
 (defn blog [blogname]
   (let [tmpl (get-template "templates/blog.html")
-        b (pr-str (first (get-blog blogname)))]
-    (render tmpl {:blog_title (:blog_title b)
-                  :blog_post (:blog_post b)
+        b (get-blog blogname)]
+    (render tmpl {:blog_title (:blog_title (first b))
+                  :blog_post (:blog_post (first b))
                   :STATIC_URL "/static/"})))
 
 (defn bloglist []
