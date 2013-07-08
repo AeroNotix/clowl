@@ -40,7 +40,7 @@
        (let [tmpl (get-template "templates/base.html")]
          (render tmpl {:STATIC_URL "/static/"})))
   (route/resources "/static/")
-  (GET "/about" []
+  (GET "/about/" []
        (blog "about"))
   (route/not-found
    (let [tmpl (get-template "templates/blog.html")]
