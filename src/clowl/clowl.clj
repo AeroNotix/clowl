@@ -4,7 +4,9 @@
   (:require [compojure.handler :as handler]
             [compojure.route :as route]
             [clojure.java.jdbc :as j]
-            [clojure.java.jdbc.sql :as s]))
+            [clojure.java.jdbc.sql :as s]
+            [clabango.parser :refer [render]]
+            [clojure.java.io :as io]))
 
 (defn get-blog [blogname]
   (j/query mysql-db
@@ -32,7 +34,9 @@
   (GET "/blog/" []
        (bloglist))
   (GET "/" []
-       (blog "base"))
+       (let [tmpl (-> "templates/base.html" io/resource io/file)]
+         (render tmpl {:STATIC_URL "/static/"})))
+  (route/resources "/static/")
   (GET "/about" []
        (blog "about"))
   (route/not-found "<h1>Page not found</h1>"))
