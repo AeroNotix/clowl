@@ -2,4 +2,5 @@
   :description "A small blogging engine"
   :license "BSD"
   :url "http://github.com/AeroNotix/clowl"
-  :dependencies [[org.clojure/clojure "1.5.1"]])
+  :dependencies [[org.clojure/clojure "1.5.1"]
+                 [clabango "0.5"]])
