@@ -48,5 +48,4 @@
                    :blog_post "Not found"
                    :STATIC_URL "/static/"}))))
 
-(def app
-     (handler/site app-routes))
+(def app (handler/site app-routes))
