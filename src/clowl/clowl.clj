@@ -12,19 +12,22 @@
   (j/query mysql-db
            (s/select * :blog_entry (s/where {:blog_url blogname}))))
 
+(defn get-template [template]
+  (-> template io/resource io/file))
+
 (defn get-blog-list []
   (j/query mysql-db
            (s/select * :blog_entry)))
 
 (defn blog [blogname]
-  (let [tmpl (-> "templates/blog.html" io/resource io/file)
-        b (get-blog blogname)]
+  (let [tmpl (get-template "templates/blog.html")
+        b (pr-str (first (get-blog blogname)))]
     (render tmpl {:blog_title (:blog_title b)
                   :blog_post (:blog_post b)
                   :STATIC_URL "/static/"})))
 
 (defn bloglist []
-  (let [tmpl (-> "templates/blogmode.html" io/resource io/file)]
+  (let [tmpl (get-template "templates/blogmode.html")]
     (render tmpl {:blog (get-blog-list)
                   :STATIC_URL "/static/"})))
 
@@ -34,13 +37,13 @@
   (GET "/blog/" []
        (bloglist))
   (GET "/" []
-       (let [tmpl (-> "templates/base.html" io/resource io/file)]
+       (let [tmpl (get-template "templates/base.html")]
          (render tmpl {:STATIC_URL "/static/"})))
   (route/resources "/static/")
   (GET "/about" []
        (blog "about"))
   (route/not-found
-   (let [tmpl (-> "templates/blog.html" io/resource io/file)]
+   (let [tmpl (get-template "templates/blog.html")]
      (render tmpl {:blog_title "404"
                    :blog_post "Not found"
                    :STATIC_URL "/static/"}))))
